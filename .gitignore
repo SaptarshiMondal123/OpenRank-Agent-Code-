@@ -1,0 +1,84 @@
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# =========================
+# Logs
+# =========================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Environment & Secrets
+# =========================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# =========================
+# Python (Backend)
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.python-version
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.pyre/
+.ipynb_checkpoints/
+
+# =========================
+# Node / Next.js (Frontend)
+# =========================
+node_modules/
+.next/
+out/
+dist/
+coverage/
+
+# Package manager lockfiles (keep only what you use)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Build / Cache temp
+# =========================
+.cache/
+.tmp/
+tmp/
+temp/
+
+# =========================
+# Local databases / artifacts
+# =========================
+*.sqlite
+*.sqlite3
+*.db
