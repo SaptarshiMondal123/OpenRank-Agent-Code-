@@ -530,9 +530,11 @@ export default function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   return (
-    <div className="h-screen bg-[#0f172a] text-slate-300 font-sans flex flex-col overflow-hidden">
+    // 1. CHANGED: min-h-screen allows it to grow past the monitor size. Removed overflow-hidden.
+    <div className="min-h-screen bg-[#0f172a] text-slate-300 font-sans flex flex-col">
+      
       {/* HEADER */}
-      <header className="h-16 border-b border-slate-800 flex items-center px-6 bg-[#0f172a] justify-between shrink-0">
+      <header className="h-16 border-b border-slate-800 flex items-center px-6 bg-[#0f172a] justify-between shrink-0 sticky top-0 z-50">
         <div className="flex items-center gap-8">
           {/* Logo */}
           <div className="flex items-center gap-3">
@@ -575,7 +577,8 @@ export default function Home() {
       </header>
       
       {/* CONTENT AREA */}
-      <main className="flex-1 overflow-hidden relative">
+      {/* 2. CHANGED: Replaced overflow-hidden with flex-col so it stretches naturally */}
+      <main className="flex-1 flex flex-col relative">
         {activeTab === "workspace" ? (
           <WorkspaceView onRunComplete={() => setRefreshTrigger(prev => prev + 1)} />
         ) : (
