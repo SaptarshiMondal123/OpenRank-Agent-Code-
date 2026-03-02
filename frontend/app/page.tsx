@@ -354,110 +354,112 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
       </div>
 
       {/* PANE 2: EDITOR & EXECUTION (MIDDLE) */}
-      <div className="flex-1 flex flex-col border-r border-slate-800 min-w-[400px]">
-        <div className="flex-1 relative bg-[#1e293b] flex flex-col">
-           <div className="flex-1 relative">
-             <Editor
-                height="100%"
-                defaultLanguage="python"
-                value={code}
-                theme="vs-dark"
-                onChange={(value) => setCode(value || "")}
-                options={{
-                    minimap: { enabled: false },
-                    fontSize: 14,
-                    lineNumbers: "on",
-                    scrollBeyondLastLine: false,
-                    automaticLayout: true,
-                    padding: { top: 20, bottom: 20 },
-                }}
-             />
-             <div className="absolute bottom-6 right-6 flex items-center gap-3 z-50">
-                <button
-                  onClick={runCodeOnly}
-                  disabled={loading || chatLoading || !selectedProblem}
-                  className={`px-6 py-3 rounded-full font-bold shadow-xl flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95
-                    ${loading || !selectedProblem ? "bg-slate-700 cursor-not-allowed text-slate-400" : "bg-emerald-600 hover:bg-emerald-500 text-white"}`}
-                >
-                  {loading ? <Cpu className="animate-spin w-5 h-5" /> : <Play className="w-5 h-5 fill-current" />}
-                  {loading ? "Running..." : "Run Code"}
-                </button>
+      <div className="flex-1 flex flex-col h-full min-w-[400px] border-r border-slate-800 bg-[#1e293b]">
+        
+        {/* Editor Area: flex-1 takes remaining space, min-h-0 absolutely forces it to not overflow */}
+        <div className="flex-1 relative min-h-0">
+          <Editor
+            height="100%"
+            defaultLanguage="python"
+            value={code}
+            theme="vs-dark"
+            onChange={(value) => setCode(value || "")}
+            options={{
+                minimap: { enabled: false },
+                fontSize: 14,
+                lineNumbers: "on",
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                padding: { top: 20, bottom: 20 },
+            }}
+          />
+          <div className="absolute bottom-6 right-6 flex items-center gap-3 z-50">
+            <button
+              onClick={runCodeOnly}
+              disabled={loading || chatLoading || !selectedProblem}
+              className={`px-6 py-3 rounded-full font-bold shadow-xl flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95
+                ${loading || !selectedProblem ? "bg-slate-700 cursor-not-allowed text-slate-400" : "bg-emerald-600 hover:bg-emerald-500 text-white"}`}
+            >
+              {loading ? <Cpu className="animate-spin w-5 h-5" /> : <Play className="w-5 h-5 fill-current" />}
+              {loading ? "Running..." : "Run Code"}
+            </button>
 
-                <button
-                  onClick={askAiCoach}
-                  disabled={loading || chatLoading || !selectedProblem}
-                  className={`px-6 py-3 rounded-full font-bold shadow-xl flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95
-                    ${chatLoading || !selectedProblem ? "bg-slate-700 cursor-not-allowed text-slate-400" : "bg-blue-600 hover:bg-blue-500 text-white"}`}
-                >
-                  {chatLoading ? <Brain className="animate-spin w-5 h-5" /> : <Bot className="w-5 h-5" />}
-                  {chatLoading ? "Analyzing..." : "Get AI Feedback"}
-                </button>
-              </div>
-           </div>
-
-           {/* EXECUTION RESULTS PANEL */}
-           {judgeResults.length > 0 && (
-             <div className="h-64 bg-[#0f172a] border-t border-slate-700 overflow-y-auto p-4 z-40 relative custom-scrollbar">
-               <h3 className="text-white font-bold mb-4 flex items-center gap-2">
-                 🧪 Execution Results
-               </h3>
-               <div className="flex flex-col gap-4">
-                 {judgeResults.map((result, index) => (
-                   <div 
-                     key={index} 
-                     className={`p-4 rounded-lg border ${
-                       result.passed ? "bg-emerald-900/20 border-emerald-800" : "bg-red-900/20 border-red-800"
-                     }`}
-                   >
-                     <div className="flex items-center justify-between mb-3">
-                       <div className="font-bold flex items-center gap-2">
-                         {result.passed ? (
-                           <span className="text-emerald-400">✅ Case {index + 1} Passed</span>
-                         ) : (
-                           <span className="text-red-400">❌ Case {index + 1} Failed</span>
-                         )}
-                       </div>
-                       
-                       {/* THE NEW METRICS BADGES */}
-                       {result.passed && result.runtime > 0 && (
-                         <div className="flex items-center gap-3 text-xs font-mono font-medium opacity-80">
-                           <span className="flex items-center gap-1 bg-slate-800/80 px-2 py-1 rounded text-blue-300 border border-slate-700">
-                             <Cpu className="w-3 h-3" /> {result.runtime} ms
-                           </span>
-                           <span className="flex items-center gap-1 bg-slate-800/80 px-2 py-1 rounded text-purple-300 border border-slate-700">
-                             <Database className="w-3 h-3" /> {result.memory} MB
-                           </span>
-                         </div>
-                       )}
-                     </div>
-
-                     <div className="text-sm font-mono space-y-2">
-                       <div className="bg-[#1e293b] p-2 rounded text-slate-300">
-                         <span className="text-slate-500 select-none">Input:    </span> {result.input}
-                       </div>
-                       <div className="bg-[#1e293b] p-2 rounded text-slate-300">
-                         <span className="text-slate-500 select-none">Expected: </span> {result.expected}
-                       </div>
-                       <div className={`p-2 rounded ${result.passed ? "bg-[#1e293b] text-slate-300" : "bg-red-950 text-red-300"}`}>
-                         <span className="text-slate-500 select-none">Actual:   </span> {result.actual}
-                       </div>
-                     </div>
-                   </div>
-                 ))}
-               </div>
-             </div>
-           )}
+            <button
+              onClick={askAiCoach}
+              disabled={loading || chatLoading || !selectedProblem}
+              className={`px-6 py-3 rounded-full font-bold shadow-xl flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95
+                ${chatLoading || !selectedProblem ? "bg-slate-700 cursor-not-allowed text-slate-400" : "bg-blue-600 hover:bg-blue-500 text-white"}`}
+            >
+              {chatLoading ? <Brain className="animate-spin w-5 h-5" /> : <Bot className="w-5 h-5" />}
+              {chatLoading ? "Analyzing..." : "Get AI Feedback"}
+            </button>
+          </div>
         </div>
+
+        {/* EXECUTION RESULTS PANEL: shrink-0 ensures it NEVER gets crushed by the editor */}
+        {judgeResults.length > 0 && (
+          <div className="h-64 shrink-0 bg-[#0f172a] border-t border-slate-700 overflow-y-auto p-4 z-40 relative custom-scrollbar">
+            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              🧪 Execution Results
+            </h3>
+            <div className="flex flex-col gap-4">
+              {judgeResults.map((result, index) => (
+                <div 
+                  key={index} 
+                  className={`p-4 rounded-lg border ${
+                    result.passed ? "bg-emerald-900/20 border-emerald-800" : "bg-red-900/20 border-red-800"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="font-bold flex items-center gap-2">
+                      {result.passed ? (
+                        <span className="text-emerald-400">✅ Case {index + 1} Passed</span>
+                      ) : (
+                        <span className="text-red-400">❌ Case {index + 1} Failed</span>
+                      )}
+                    </div>
+                    
+                    {result.passed && result.runtime > 0 && (
+                      <div className="flex items-center gap-3 text-xs font-mono font-medium opacity-80">
+                        <span className="flex items-center gap-1 bg-slate-800/80 px-2 py-1 rounded text-blue-300 border border-slate-700">
+                          <Cpu className="w-3 h-3" /> {result.runtime} ms
+                        </span>
+                        <span className="flex items-center gap-1 bg-slate-800/80 px-2 py-1 rounded text-purple-300 border border-slate-700">
+                          <Database className="w-3 h-3" /> {result.memory} MB
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="text-sm font-mono space-y-2">
+                    <div className="bg-[#1e293b] p-2 rounded text-slate-300">
+                      <span className="text-slate-500 select-none">Input:    </span> {result.input}
+                    </div>
+                    <div className="bg-[#1e293b] p-2 rounded text-slate-300">
+                      <span className="text-slate-500 select-none">Expected: </span> {result.expected}
+                    </div>
+                    <div className={`p-2 rounded ${result.passed ? "bg-[#1e293b] text-slate-300" : "bg-red-950 text-red-300"}`}>
+                      <span className="text-slate-500 select-none">Actual:   </span> {result.actual}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* PANE 3: AI COACH CHAT (RIGHT) */}
-      <div className="w-[400px] bg-[#0f172a] flex flex-col h-full min-h-0 overflow-hidden relative">
+      <div className="w-[400px] bg-[#0f172a] flex flex-col h-full shrink-0">
+        
+        {/* Header: shrink-0 */}
         <div className="bg-slate-900/50 px-4 py-3 border-b border-slate-800 flex items-center gap-2 shrink-0">
           <Bot className="w-4 h-4 text-blue-400" />
           <h2 className="font-bold text-slate-200 text-xs tracking-wider uppercase">AI Coach Intelligence</h2>
         </div>
         
-        <div className="flex-1 h-0 overflow-y-auto p-4 space-y-6 scroll-smooth custom-scrollbar">
+        {/* Chat Log: flex-1 + min-h-0 creates a perfect boundary for the scrollbar */}
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-6 scroll-smooth custom-scrollbar">
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-slate-600 opacity-60 space-y-4">
               <Terminal className="w-12 h-12" />
@@ -493,6 +495,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
           <div ref={chatEndRef} />
         </div>
 
+        {/* Input Bar: shrink-0 */}
         <div className="p-4 bg-slate-900 border-t border-slate-800 shrink-0">
           <div className="relative">
             <input
