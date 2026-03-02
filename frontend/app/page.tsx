@@ -27,7 +27,7 @@ function DashboardView() {
 
   // Re-fetch stats every time this view is opened to ensure data is fresh
   useEffect(() => {
-    fetch("http://localhost:8000/stats")
+    fetch("https://openrank-agent-code.onrender.com/stats")
       .then((res) => res.json())
       .then((data) => {
         setStats(data);
@@ -204,7 +204,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
 
   // --- 1. LOAD PROBLEMS ON STARTUP ---
   useEffect(() => {
-    fetch("http://localhost:8000/problems")
+    fetch("https://openrank-agent-code.onrender.com/problems")
       .then(res => res.json())
       .then(data => {
         if (data.problems) setProblemsList(data.problems);
@@ -224,7 +224,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
     
     // Fetch full problem details
     try {
-      const res = await fetch(`http://localhost:8000/problems/${problemId}`);
+      const res = await fetch(`https://openrank-agent-code.onrender.com/problems/${problemId}`);
       const data = await res.json();
       
       setSelectedProblem(data);
@@ -244,7 +244,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
     setJudgeResults([]); 
     
     try {
-      const res = await fetch("http://localhost:8000/full-critique", {
+      const res = await fetch("https://openrank-agent-code.onrender.com/full-critique", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // Notice we send the title so the backend can find the test cases!
@@ -265,7 +265,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
     setMessages([]); 
     
     try {
-      const res = await fetch("http://localhost:8000/full-critique", {
+      const res = await fetch("https://openrank-agent-code.onrender.com/full-critique", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, problem: selectedProblem.title, language: "python", run_ai: true }),
@@ -292,7 +292,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
     setChatLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/chat", {
+      const res = await fetch("https://openrank-agent-code.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, problem: selectedProblem.title, history: updatedHistory }),
