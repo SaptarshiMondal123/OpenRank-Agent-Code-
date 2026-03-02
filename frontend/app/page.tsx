@@ -306,7 +306,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
   };
 
   return (
-    <div className="flex-1 flex h-full overflow-hidden">
+    <div className="flex-1 flex flex-row h-full min-h-0 overflow-hidden">
       
       {/* PANE 1: PROBLEM DESCRIPTION (LEFT) */}
       <div className="w-[350px] flex flex-col border-r border-slate-800 bg-[#0f172a]">
@@ -530,13 +530,11 @@ export default function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   return (
-    // 1. CHANGED: min-h-screen allows it to grow past the monitor size. Removed overflow-hidden.
-    <div className="min-h-screen bg-[#0f172a] text-slate-300 font-sans flex flex-col">
+    <div className="h-screen bg-[#0f172a] text-slate-300 font-sans flex flex-col overflow-hidden">
       
       {/* HEADER */}
-      <header className="h-16 border-b border-slate-800 flex items-center px-6 bg-[#0f172a] justify-between shrink-0 sticky top-0 z-50">
+      <header className="h-16 border-b border-slate-800 flex items-center px-6 bg-[#0f172a] justify-between shrink-0">
         <div className="flex items-center gap-8">
-          {/* Logo */}
           <div className="flex items-center gap-3">
             <div className="bg-blue-600 p-2 rounded-lg">
                <Brain className="w-5 h-5 text-white" />
@@ -547,7 +545,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Navigation Tabs */}
           <nav className="flex bg-[#1e293b] p-1 rounded-lg border border-slate-700/50">
             <button
               onClick={() => setActiveTab("workspace")}
@@ -576,9 +573,8 @@ export default function Home() {
         </div>
       </header>
       
-      {/* CONTENT AREA */}
-      {/* 2. CHANGED: Replaced overflow-hidden with flex-col so it stretches naturally */}
-      <main className="flex-1 flex flex-col relative">
+      {/* CONTENT AREA: Added min-h-0 here to stop infinite expansion */}
+      <main className="flex-1 flex flex-col relative min-h-0">
         {activeTab === "workspace" ? (
           <WorkspaceView onRunComplete={() => setRefreshTrigger(prev => prev + 1)} />
         ) : (
