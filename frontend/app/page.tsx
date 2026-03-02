@@ -306,7 +306,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
   };
 
   return (
-    <div className="flex-1 flex overflow-hidden">
+    <div className="flex-1 flex h-full overflow-hidden">
       
       {/* PANE 1: PROBLEM DESCRIPTION (LEFT) */}
       <div className="w-[350px] flex flex-col border-r border-slate-800 bg-[#0f172a]">
@@ -457,7 +457,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
           <h2 className="font-bold text-slate-200 text-xs tracking-wider uppercase">AI Coach Intelligence</h2>
         </div>
         
-        <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-6 scroll-smooth custom-scrollbar">
+        <div className="flex-1 h-0 overflow-y-auto p-4 space-y-6 scroll-smooth custom-scrollbar">
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-slate-600 opacity-60 space-y-4">
               <Terminal className="w-12 h-12" />
@@ -475,7 +475,7 @@ function WorkspaceView({ onRunComplete }: { onRunComplete: () => void }) {
                   ${msg.role === "user" ? "bg-slate-700 text-white" : "bg-[#1e293b] text-slate-300 border border-slate-700/50"}`}>
                   <ReactMarkdown 
                     components={{
-                      code: ({node, ...props}) => <code className="bg-black/30 rounded px-1 py-0.5 text-orange-300 font-mono text-xs" {...props} />
+                      code: ({node, ...props}) => <code className="bg-black/30 rounded px-1 py-0.5 text-orange-300 font-mono text-xs whitespace-pre-wrap break-words" {...props} />
                     }}
                   >
                     {msg.content}
